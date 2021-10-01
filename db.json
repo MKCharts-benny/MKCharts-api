@@ -1,0 +1,40 @@
+{
+  "results": [
+    {
+      "date": "2021-08-20",
+      "winner": "Benny",
+      "players": "4",
+      "id": "46432"
+    },
+    {
+      "date": "2021-09-05",
+      "winner": "Kelven",
+      "players": "4",
+      "id": "15425"
+    },
+    {
+      "date": "2021-09-11",
+      "winner": "Abriel",
+      "players": "4",
+      "id": "04198"
+    },
+    {
+      "date": "2021-09-28",
+      "winner": "Mihir",
+      "players": "4",
+      "id": "31115"
+    },
+    {
+      "date": "2021-09-16",
+      "players": "4",
+      "winner": "Avery",
+      "id": "54204"
+    },
+    {
+      "date": "2021-09-28",
+      "players": "4",
+      "winner": "Abriel",
+      "id": "23494"
+    }
+  ]
+}
