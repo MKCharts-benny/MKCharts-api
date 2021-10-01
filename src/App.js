@@ -1,5 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import resultService from './services/results'
+import ToggleButton from 'react-bootstrap/ToggleButton'
+import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
+import Button from 'react-bootstrap/Button'
+
+import './App.css';
 
 const ResultInput = ({
   date, newDate, winner, setWinner, second, third, fourth, setSecond, 
@@ -23,22 +28,52 @@ const ResultInput = ({
       .then(setResults(results.concat(newResult)))
   }
   
+  const radios = [
+    { name: '2', value: '2' },
+    { name: '3', value: '3' },
+    { name: '4', value: '4' },
+  ];
+
+  {        
+  // <div>
+  //   # of Players
+  //     <input type='radio' name='players' value='2' onChange={({target})=>setPlayers(target.value)}/>
+  //     <label htmlFor='2'>2</label>
+  //     <input type='radio' name='players' value='3' onChange={({target})=>setPlayers(target.value)}/>
+  //     <label htmlFor='3'>3</label>
+  //     <input type='radio' name='players' value='4' onChange={({target})=>setPlayers(target.value)}/>
+  //     <label htmlFor='4'>4</label>
+  // </div>
+  }
+
   return(
     <div>
       <h3>Add New Results</h3>
-      <form onSubmit={addResult}>
+        <form onSubmit={addResult}>
+
         <div>
-          # of Players
-            <input type='radio' name='players' value='2' onChange={({target})=>setPlayers(target.value)}/>
-            <label htmlFor='2'>2</label>
-            <input type='radio' name='players' value='3' onChange={({target})=>setPlayers(target.value)}/>
-            <label htmlFor='3'>3</label>
-            <input type='radio' name='players' value='4' onChange={({target})=>setPlayers(target.value)}/>
-            <label htmlFor='4'>4</label>
+        <div># of Players:</div> 
+        <ToggleButtonGroup className="mb-2" name="players">
+          {radios.map((r, idx) => (
+            <ToggleButton
+              key={idx}
+              id={`radio-${idx}`}
+              type="radio"
+              variant="secondary"
+              name="radio"
+              value={r.value}
+              checked={players === r.value ? "checked" : ""}
+              onChange={({target})=>setPlayers(target.value)}
+            >
+            {r.name}
+            </ToggleButton>
+        ))}
+        </ToggleButtonGroup>
         </div>
         <div style={{display: players === '' ? 'none' : '' }} >
           <div>
-            Winner:
+            <p>
+            <label for="winner">Winner:</label>
             <input  
               name="winner"
               type="text"
@@ -47,39 +82,49 @@ const ResultInput = ({
               value={winner} 
               onChange={({target})=>setWinner(target.value)}
             />
+            </p>
             </div>
             <div>
-            Second:
-            <input  
-              name="second"
-              type="text"
-              list="roomates"
-              id='second' 
-              value={second} 
-              onChange={({target})=>setSecond(target.value)}
-            />
+
+            <p>
+              <label for="second" > Second:</label>
+              <input
+                name="second"
+                type="text"
+                list="roomates"
+                id='second'
+                value={second}
+                onChange={({target})=>setSecond(target.value)}
+              />
+            </p>
+
             </div>
             <div style={{display: players === '2' ? 'none' : '' }} >
-            Third:
-            <input
-              name="third"
-              type="text"
-              list="roomates"
-              id='third' 
-              value={third} 
-              onChange={({target})=>setThird(target.value)}
-            />
+            <p>
+              <label for='third'>Third:</label>
+              <input
+                name="third"
+                type="text"
+                list="roomates"
+                id='third'
+                value={third}
+                onChange={({target})=>setThird(target.value)}
+              />
+            </p>
             </div>
             <div style={{display: players !== '4' ? 'none' : '' }} >
-            Fourth:
-            <input
-              name="fourth"
-              type="text"
-              list="roomates"
-              id='fourth' 
-              value={fourth} 
-              onChange={({target})=>setFourth(target.value)}
-            />
+            
+            <p>
+              <label for="fourth">Fourth:</label>
+              <input
+                name="fourth"
+                type="text"
+                list="roomates"
+                id='fourth'
+                value={fourth}
+                onChange={({target})=>setFourth(target.value)}
+              />
+            </p>
             </div>
           <div>
             Date: 
@@ -92,8 +137,9 @@ const ResultInput = ({
             />
           </div>
         </div>
-        <button type="submit">Submit</button>
-
+        <div>
+          <Button type="submit" variant="secondary">Submit</Button>
+        </div>
         <datalist id="roomates">
           <option value="Benny"/>
           <option value="Kelven"/>
@@ -162,7 +208,7 @@ const App = () => {
   const [third, setThird] = useState('') 
   const [fourth, setFourth] = useState('') 
   const [date, newDate] = useState('') 
-  const [players, setPlayers] = useState('') 
+  const [players, setPlayers] = useState('4') 
 
   useEffect(()=>{
     resultService.getAll()
@@ -170,26 +216,26 @@ const App = () => {
   },[])
 
   return (
-    <div>
-      <h2>Welcome to MKCharts</h2>
-      <div>
-        <ResultInput
-          date={date}
-          newDate={newDate}
-          winner={winner}
-          setWinner={setWinner}
-          players={players}
-          setPlayers={setPlayers}
-          results={results}
-          setResults={setResults}
-        />
+      <div className="container">
+        <h2>Welcome to MKCharts</h2>
+        <div>
+          <ResultInput
+            date={date}
+            newDate={newDate}
+            winner={winner}
+            setWinner={setWinner}
+            players={players}
+            setPlayers={setPlayers}
+            results={results}
+            setResults={setResults}
+          />
+        </div>
+        <div>
+          <RecentGames
+            results={results}
+          />
+        </div>
       </div>
-      <div>
-        <RecentGames
-          results={results}
-        />
-      </div>
-    </div>
   )
 
   }
