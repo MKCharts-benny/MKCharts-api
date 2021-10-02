@@ -3,12 +3,11 @@
   background-color: blueviolet;
 }
 
-form {
-  overflow: hidden;
-}
-input {
-  float: right;
-  clear: both;
+.col {
+  border: 1px solid;
+  
 }
 
-
+h3 {
+  text-align: center;
+}
