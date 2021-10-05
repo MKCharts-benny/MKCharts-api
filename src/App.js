@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import resultService from './services/results'
+import weatherService from './services/weather'
 import { useField } from "./hooks/index.js"
 
 import './App.css';
@@ -14,6 +15,8 @@ players, setPlayers,results, setResults}) => {
 
   const numPlayers = ['2','3','4']
   const playerNames = ['Abriel','Avery','Benny','Kelven','Mihir']
+
+  weatherService.get("montreal").then(res => console.log(res))
 
   const getId = () => (100000 * Math.random()).toFixed(0)
   const asObject = (date, players, winner) => {
@@ -121,7 +124,7 @@ const RecentGames = ({results}) => {
   useEffect(()=>{
     setRecentResults(sortedResults.slice(0,5))
   },[results]) 
-  
+
   return(
     <div>
       <h3>Recent Races</h3>
