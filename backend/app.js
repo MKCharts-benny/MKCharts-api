@@ -23,5 +23,4 @@ app.use(express.json())
 
 app.use('/api/results', resultsRouter)
 
-
 module.exports = app
