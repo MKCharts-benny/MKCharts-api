@@ -11,18 +11,18 @@ import Button from 'react-bootstrap/Button'
 
 const ResultInput = ({
 date, newDate, winner, second, third, fourth, 
-players, setPlayers,results, setResults}) => {
+playerCount, setPlayerCount,results, setResults}) => {
 
-  const numPlayers = ['2','3','4']
+  const numPlayerCount = ['2','3','4']
   const playerNames = ['Abriel','Avery','Benny','Kelven','Mihir']
 
-  weatherService.get("montreal").then(res => console.log(res))
+  weatherService.get("winner").then(res => console.log(res))
 
   const getId = () => (100000 * Math.random()).toFixed(0)
-  const asObject = (date, players, winner) => {
+  const asObject = (date, playerCount, winner) => {
     return {
       date,
-      players,
+      playerCount,
       winner,
       id: getId()
     }
@@ -31,7 +31,7 @@ players, setPlayers,results, setResults}) => {
   const addResult = (event) => {
     event.preventDefault()
 
-    const newResult = asObject(date, players, winner.value)
+    const newResult = asObject(date, playerCount, winner.value)
     resultService.postResult(newResult)
       .then(setResults(results.concat(newResult)))
   }
@@ -45,8 +45,8 @@ players, setPlayers,results, setResults}) => {
               <tr>
                   <td># of Players:</td>
                   <td style={{textAlign: 'center'}}>
-                    <ToggleButtonGroup className="mb-2" name="players">
-                      {numPlayers.map((r, idx) => (
+                    <ToggleButtonGroup className="mb-2" name="playerCount">
+                      {numPlayerCount.map((r, idx) => (
                         <ToggleButton
                           key={idx}
                           id={`radio-${idx}`}
@@ -54,9 +54,9 @@ players, setPlayers,results, setResults}) => {
                           variant="secondary"
                           name="radio"
                           value={r}
-                          checked={players === r ? "checked" : ""}
+                          checked={playerCount === r ? "checked" : ""}
                           onChange={({target})=>{
-                            setPlayers(target.value)}}
+                            setPlayerCount(target.value)}}
                         >
                         {r}
                         </ToggleButton>
@@ -64,34 +64,22 @@ players, setPlayers,results, setResults}) => {
                     </ToggleButtonGroup>
                   </td>
               </tr>
-
-                  <tr>
-                    <td>Winner</td>
-                    <td><input {...winner}/></td>
-                  </tr>
-                  <tr>
-                    <td>Second</td>
-                    <td><input {...second}/></td>
-                  </tr>
-                  <tr>
-                    <td>Third</td>
-                    <td >
-                    <input 
-                    {...third}
-                    />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Fourth</td>
-                    <td><input {...fourth}/></td>
-                  </tr>
-                            
-
-                  <datalist id="roomates">
-                      {playerNames.map(p => (
-                        <option value={p}/>
-                      ))}
-                    </datalist>
+              <tr>
+                <td>Winner</td>
+                <td><input {...winner}/></td>
+              </tr>
+              <tr>
+                <td>Second</td>
+                <td><input {...second}/></td>
+              </tr>
+              <tr>
+                <td>Third</td>
+                <td><input {...third}/></td>
+              </tr>
+              <tr>
+                <td>Fourth</td>
+                <td><input {...fourth}/></td>
+              </tr>
               <tr>
                 <td>Date:</td>
                 <td>
@@ -105,8 +93,20 @@ players, setPlayers,results, setResults}) => {
                 </td>
               </tr>
             </tbody>
+            
           </table>
-          <div style={{textAlign: 'center', padding:'10px'}}><Button type="submit" variant="secondary">Submit</Button></div>
+          <datalist 
+            id="roomates">
+            {playerNames.map((p, idx) => (
+              <option
+                key={idx} 
+                value={p}
+              />
+            ))}
+          </datalist>
+          <div style={{textAlign: 'center', padding:'10px'}}>
+            <Button type="submit" variant="secondary">Submit</Button>
+          </div>
       </form>
     </div>
   )
@@ -123,7 +123,7 @@ const RecentGames = ({results}) => {
 
   useEffect(()=>{
     setRecentResults(sortedResults.slice(0,5))
-  },[results]) 
+  },[results, sortedResults]) 
 
   return(
     <div>
@@ -146,14 +146,14 @@ const RecentGames = ({results}) => {
 const App = () => {
   const [results, setResults] = useState([])
   const [date, newDate] = useState('') 
-  const [players, setPlayers] = useState('4') 
+  const [playerCount, setPlayerCount] = useState('4') 
 
-  const winner = useField('winner', players)
-  const second = useField('second', players)
-  const third = useField('third', players)
-  const fourth = useField('fourth', players)
+  const winner = useField('winner', playerCount)
+  const second = useField('second', playerCount)
+  const third = useField('third', playerCount)
+  const fourth = useField('fourth', playerCount)
 
-  console.log("results", results);
+  console.log("fourth", fourth);
 
   useEffect(()=>{
     resultService.getAll()
@@ -174,8 +174,8 @@ const App = () => {
               second = {second}
               third = {third}
               fourth = {fourth}
-              players={players}
-              setPlayers={setPlayers}
+              playerCount={playerCount}
+              setPlayerCount={setPlayerCount}
               results={results}
               setResults={setResults}
             />
